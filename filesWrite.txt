@@ -1,5 +1,0 @@
-Number of occurrences: 1
-Restriction map of points (X): 0,168,999
-Distances between restriction cut points (ΔX): 168,831,999
------------------------------ Partial Digest Algorithm ----------------------------- 
-Restriction map of points (X): 0,831,999
