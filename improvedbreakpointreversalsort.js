@@ -2,29 +2,42 @@ var fs = require('fs');
 
 module.exports = {
     main: function (array, res) {
-        // var permutation = array.map(Number);
-        var permutation = [0, 13, 2, 17, 1, 3, 20, 19, 11, 12, 4, 5, 16, 15, 10, 18, 14, 8, 7, 6, 9, 21]
-        var smallest = permutation.length
-        var reversed = []
-        var breakNum
+        var permutation = array.map(Number); //Input file
+        // var permutation = [0, 13, 2, 17, 1, 3, 20, 19, 11, 12, 4, 5, 16, 15, 10, 18, 14, 8, 7, 6, 9, 21]
+        var smallest = permutation.length //smallest var starts with value of maximum number
+        var reversed, increasing = [] 
+        var breakNum //Number of breakpoints
 
-        findBreakPoint()
-        while (breakNum > 0) {
-            findBreakPoint()
-            if (smallest != permutation.length) {
-                i = permutation.indexOf(smallest)
-                j = permutation.indexOf(smallest - 1)
+        findBreakPoint() //Function that gives number of breakpoints and smallest number in decreasing sequence to enter in while loop
+        while (breakNum > 0) { //While number of breakpoints is higher than zero
+            findBreakPoint() //Call function each cycle for number of breakpoints
+            if (smallest != permutation.length) {  //if smallest number is still equal to maximum number, it mens that there was no decreasing sequence
+                i = permutation.indexOf(smallest) //We take the index of smallest number in a decreasing sequence
+                j = permutation.indexOf(smallest - 1) //We take the index of the number before that (smallest - 1)
 
-                smallest = permutation.length
+                smallest = permutation.length //Reset value os smallest vr for next cycle
 
-                if (i < j) {
+                if (i < j) { //Depending on the order of both numbers we reverse them
                     reversal(i, j)
                 } else {
                     reversal(j, i)
                 }
-            } else {
-                console.log('hi ');
-                
+            } else if (breakNum > 0) { //In the case that there's no decreasing sequence
+                findIncreasing() //Gets an increasing sequence 
+                first = permutation.indexOf(increasing[0])
+                last = permutation.indexOf(increasing[increasing.length - 1])
+                reverseIncreased(first, last) //revert the sequence
+                increasing = []
+            }
+        }
+
+        function findIncreasing() {
+            for (let i = 0; i < permutation.length - 1; i++) {
+                if (permutation[i] - permutation[i + 1] == -1) { //If it's an increasing sequence
+                    increasing.push(permutation[i], permutation[i + 1]) //Saves to an array the numbers of the sequence
+                } else if (increasing.length != 0) { //If the array is filled exit loop
+                    break
+                }
             }
         }
 
@@ -39,11 +52,21 @@ module.exports = {
             }
         }
 
-        function reversal(left, right) {
-            distance = right - left
-            reversed = permutation.splice(left + 1, distance)
+        function reversal(left, right) { //Takes in both indexes
+            distance = right - left //Calculates distance between them
+            reversed = permutation.splice(left + 1, distance) //Splits all number in that interval
+            reversed.reverse() //Reverses them
+            permutation.splice(left + 1, 0, reversed) //Puts inverted back in the array
+            permutation = [].concat(...permutation) //Flattens the array
+            reversed = []
+            console.log(permutation);
+        }
+
+        function reverseIncreased(left, right) { //Especial case for Reverting Increasing sequences
+            distance = right - left + 1
+            reversed = permutation.splice(left, distance)
             reversed.reverse()
-            permutation.splice(left + 1, 0, reversed)
+            permutation.splice(left, 0, reversed)
             permutation = [].concat(...permutation)
             reversed = []
             console.log(permutation);

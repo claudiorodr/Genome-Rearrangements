@@ -22,13 +22,13 @@ module.exports = {
         res.download(`${__dirname}/filesWrite.txt`); // Set disposition and send it.
         
 
-        function reversal(i, j) {
+        function reversal(i, j) { //Takes in both indexes
             j = j + 1
-            distance = j - i
-            reversed = permutation.splice(i - 1, distance)
-            reversed.reverse()
-            permutation.splice(i - 1, 0, reversed)
-            permutation = [].concat(...permutation)
+            distance = j - i //Calculates distance between them
+            reversed = permutation.splice(i - 1, distance) //Splits all number in that interval
+            reversed.reverse() //Reverses them
+            permutation.splice(i - 1, 0, reversed) //Puts inverted back in the array
+            permutation = [].concat(...permutation) //Flattens the array
             reversed = []
             p = p + 1
         }
